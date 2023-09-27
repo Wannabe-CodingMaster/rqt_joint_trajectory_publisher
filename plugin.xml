@@ -1,0 +1,20 @@
+<library path="src">
+  <class name="JointTrajectoryPublisher"
+         type="rqt_joint_trajectory_publisher.joint_trajectory_publisher.JointTrajectoryPublisher"
+         base_class_type="rqt_gui_py::Plugin">
+    <description>
+      A plugin publishing 'joint_trajectory' topic
+    </description>
+    <qtgui>
+      <group>
+        <label>Robot Tools</label>
+        <icon type="theme">folder</icon>
+        <statustip>Plugins related to robot tools.</statustip>
+      </group>
+      <label>Joint trajectory publisher</label>
+      <statustip>
+        A plugin publishing 'joint_trajectory' topic
+      </statustip>
+    </qtgui>
+  </class>
+</library>
