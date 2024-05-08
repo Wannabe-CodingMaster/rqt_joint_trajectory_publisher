@@ -14,9 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rclpy
 from rclpy.node import Node
-from controller_manager_msgs.srv import ListControllers
+from controller_manager import controller_manager_services
 
 
 class ControllerLister:
@@ -46,26 +45,9 @@ class ControllerLister:
         @param cm: selected "namespace/controller_manager"
         get all controller list from controller manager
         """
-        self.controller_list_client = self.jtc_node.create_client(
-                ListControllers,
-                cm + '/list_controllers'
-        )
-        service_request = ListControllers.Request()
-        future = self.controller_list_client.call_async(service_request)
-
-        if not self.controller_list_client.wait_for_service(timeout_sec=10.0):
-            self.jtc_node.get_logger().error("Service is not available.")
-
-        rclpy.spin_once(self.jtc_node)
-
-        if future.done():
-            try:
-                response = future.result()
-                jtc_list = self._filter_jtc(response)
-                return jtc_list
-            except Exception as e:
-                self.jtc_node.get_logger().warning('Failed to get joint trajectory controller list: {}'.format(e))
-
+        result = controller_manager_services.list_controllers(self.jtc_node, cm)
+        jtc_list = self._filter_jtc(result)
+        return jtc_list
 
     def _filter_jtc(self, controller_list):
         """
